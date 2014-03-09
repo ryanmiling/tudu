@@ -441,8 +441,8 @@ var timer = {
         );
         */
 
-        //$('body').append('<br/> Device='+JSON.stringify(window.device));
-        //$('body').append('<br/> Plugin='+JSON.stringify(window.plugin));
+        $('body').append('<br/> Device='+JSON.stringify(window.device));
+        $('body').append('<br/> Plugin='+JSON.stringify(window.plugin));
         //$('body').append('<br/> Plugin Notif='+JSON.stringify(window.plugin.notification));
     }
 };
