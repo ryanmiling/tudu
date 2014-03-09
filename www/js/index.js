@@ -56,7 +56,7 @@ var timer = {
         };
 
         // If an alert already exists, let's make that visible
-        $('body').append('notif.local = '+JSON.stringify(window.plugin.notification.local));
+        $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
         window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
             if (isScheduled) {
                 var timeRemaining = '< 1';
@@ -65,7 +65,7 @@ var timer = {
 
                 timer.disable();
             }
-            $('body').append('notif.local = '+JSON.stringify(window.plugin.notification.local));
+            $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
         });
     },
 
@@ -409,12 +409,14 @@ var timer = {
         $('.label').text('start').removeClass('active started');
 
         // Cancel the current alert
-        $('body').append('Cancelling any scheduled notifs...');
+        $('body').append('<br/>Cancelling any scheduled notifs...');
+        $('body').append('<br/>Notifs = '+window.plugin.notification.local.getScheduledIds());
+        $('body').append('<br/>Notif exists? '+window.plugin.notification.local.isScheduled(timer.ID));
         window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
-            $('body').append('isScheduled = '+isScheduled);
+            $('body').append('<br/>isScheduled = '+isScheduled);
             if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); }
         });
-        $('body').append('Cancelled.');
+        $('body').append('<br/>Cancelled.');
 
         timer.construct();
     },
