@@ -1,0 +1,7 @@
+These are the only tracked files for tudu.
+
+Make sure that you're using the correct version of Cordova and have the proper plugins installed:
+>> cordova -v
+    3.3.0-rc.1
+>> cordova plugin ls
+    [ 'org.apache.cordova.dialogs', 'org.apache.cordova.vibration' ]
