@@ -55,6 +55,17 @@ var timer = {
             return (innerRadiusSq <= calc && calc <= outerRadiusSq)
         };
 
+        // If an alert already exists, let's make that visible
+        window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
+            if (isScheduled) {
+                var timeRemaining = '< 1';
+                timer.updateCount(timeRemaining);
+
+                timer.disable();
+
+                $('body').append(window.plugin.notification.local);
+            }
+        });
     },
 
     // // // // // // // // // //
@@ -110,6 +121,7 @@ var timer = {
     // Variables
     // // // // // // // // // //
 
+    ID: '1',
     RADIUS: 0,
     CIRCUMMINUTES: 60,
 
@@ -359,7 +371,10 @@ var timer = {
         // Let user click button now!
         var $label = $('.label');
         $label.bind('touchstart', function() { $(this).addClass('down'); });
-        $label.bind('touchend', timer.startCountdown);
+        $label.bind('touchend', function(e) {
+            timer.disable();
+            timer.createAlert();
+        });
 
         // reset vals
         timer.startPosn = timer.endPosn = null;
@@ -391,6 +406,12 @@ var timer = {
         $('.reset').text('');
         $('.dial').removeClass('started');
         $('.label').text('start').removeClass('active started');
+
+        // Cancel the current alert
+        window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
+            if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); $('body').append('cancelling...');}
+        });
+
         timer.construct();
     },
 
@@ -402,18 +423,20 @@ var timer = {
         $label.text('start');
     },
 
-    startCountdown: function(e) {
+    disable: function() {
         // Cosmetics
-        var $label = $(e.target);
+        var $label = $('.label');
         $label.removeClass('down');
         $label.addClass('started');
         $label.text('started');
-        $label.unbind(); // REMOVES ALL EVENTS
 
-        $('.dial').addClass('started').unbind(); // REMOVES ALL EVENTS
+        // Remove all bound events
+        $label.unbind();
+        $('.dial').addClass('started').unbind();
+    },
 
-        // TODO add a kill-switch
-        /*
+    createAlert: function() {
+        /* XXX The old way of alerting, but you had to keep the app open
         setTimeout(function() {
             navigator.notification.vibrate(2500);
             navigator.notification.alert(
@@ -427,25 +450,16 @@ var timer = {
         );
         */
 
-        // TODO remove later on
-        /* XXX navigator.notification is working as of 3/2/2014 16:32
-        $('body').append('<br/>Testing..');
-        $('body').append('<br/> Navigator='+JSON.stringify(navigator));
-        $('body').append('<br/> Navigator notification='+JSON.stringify(navigator.notification));
+        var now = new Date().getTime();
+        var alertTime = new Date(now + 60*1000*timer.totalTraveled);
+        window.plugin.notification.local.add({
+                 id: timer.ID,
+               date: alertTime,
+              title: 'tudu',
+            message: "Time's up!"
+        });
 
-        navigator.notification.alert(
-            "Test message",    // message
-            timer.fullReset, // callback
-            'tudu',          // title
-            'K'              // buttonName
-        );
-        */
-
-        $('body').append('<br/> Device='+JSON.stringify(window.device));
-        $('body').append('<br/> Plugin='+JSON.stringify(window.plugin));
-        window.plugin.notification.local.add({ message: 'Great app!' });
-        //$('body').append('<br/> Plugin Notif='+JSON.stringify(window.plugin.notification));
-    }
+    },
 };
 
 var debug = {
