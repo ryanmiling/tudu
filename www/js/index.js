@@ -443,6 +443,7 @@ var timer = {
 
         $('body').append('<br/> Device='+JSON.stringify(window.device));
         $('body').append('<br/> Plugin='+JSON.stringify(window.plugin));
+        window.plugin.notification.local.add({ message: 'Great app!' });
         //$('body').append('<br/> Plugin Notif='+JSON.stringify(window.plugin.notification));
     }
 };
