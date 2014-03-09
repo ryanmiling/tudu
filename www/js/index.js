@@ -59,12 +59,12 @@ var timer = {
         window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
             if (isScheduled) {
                 var timeRemaining = '< 1';
+                // TODO get the real amount of time remaining
                 timer.updateCount(timeRemaining);
 
                 timer.disable();
-
-                $('body').append(window.plugin.notification.local);
             }
+            $('body').append('notif.local = '+JSON.stringify(window.plugin.notification.local));
         });
     },
 
@@ -409,7 +409,8 @@ var timer = {
 
         // Cancel the current alert
         window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
-            if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); $('body').append('cancelling...');}
+            $('body').append('isScheduled = '+isScheduled);
+            if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); }
         });
 
         timer.construct();
