@@ -397,7 +397,7 @@ var timer = {
     },
 
     updateCount: function(count) {
-        return $('.count').text(count+'m');
+        return $('.count').text(count+'s');
     },
 
     fullReset: function() {
@@ -451,7 +451,7 @@ var timer = {
         */
 
         var now = new Date().getTime();
-        var alertTime = new Date(now + 60*1000*timer.totalTraveled);
+        var alertTime = new Date(now + 1000*timer.totalTraveled);
         window.plugin.notification.local.add({
                  id: timer.ID,
                date: alertTime,
