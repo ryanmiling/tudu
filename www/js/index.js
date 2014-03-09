@@ -411,8 +411,8 @@ var timer = {
         // Cancel the current alert
         $('body').append('<br/>Cancelling any scheduled notifs...');
         $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
-        $('body').append('<br/>Notifs = '+window.plugin.notification.local.getScheduledIds());
-        $('body').append('<br/>Notif exists? '+window.plugin.notification.local.isScheduled(timer.ID));
+        $('body').append('<br/>Notifs = '+window.plugin.notification.local.getScheduledIds);
+        $('body').append('<br/>Notif exists? '+window.plugin.notification.local.isScheduled);
         window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
             $('body').append('<br/>isScheduled = '+isScheduled);
             if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); }
