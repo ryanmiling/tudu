@@ -56,17 +56,15 @@ var timer = {
         };
 
         // If an alert already exists, let's make that visible
-        $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
-        window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
-            if (isScheduled) {
-                var timeRemaining = '< 1';
-                // TODO get the real amount of time remaining
-                timer.updateCount(timeRemaining);
+        /* TODO surface any current alerts
+        if (isScheduled) {
+            var timeRemaining = '< 1';
+            // TODO get the real amount of time remaining
+            timer.updateCount(timeRemaining);
 
-                timer.disable();
-            }
-            $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
-        });
+            timer.disable();
+        }
+        */
     },
 
     // // // // // // // // // //
@@ -398,7 +396,7 @@ var timer = {
     },
 
     updateCount: function(count) {
-        return $('.count').text(count+'s');
+        return $('.count').text(count+'m');
     },
 
     fullReset: function() {
@@ -409,15 +407,7 @@ var timer = {
         $('.label').text('start').removeClass('active started');
 
         // Cancel the current alert
-        $('body').append('<br/>Cancelling any scheduled notifs...');
-        $('body').append('<br/>notif.local = '+JSON.stringify(window.plugin.notification.local));
-        $('body').append('<br/>Notifs = '+window.plugin.notification.local.getScheduledIds);
-        $('body').append('<br/>Notif exists? '+window.plugin.notification.local.isScheduled);
-        window.plugin.notification.local.isScheduled(timer.ID, function(isScheduled) {
-            $('body').append('<br/>isScheduled = '+isScheduled);
-            if (isScheduled) { window.plugin.notification.local.cancel(timer.ID); }
-        });
-        $('body').append('<br/>Cancelled.');
+        window.plugin.notification.local.cancel(timer.ID);
 
         timer.construct();
     },
@@ -443,7 +433,7 @@ var timer = {
     },
 
     createAlert: function() {
-        /* XXX The old way of alerting, but you had to keep the app open
+        /* The old way of alerting, but you had to keep the app open
         setTimeout(function() {
             navigator.notification.vibrate(2500);
             navigator.notification.alert(
@@ -458,7 +448,7 @@ var timer = {
         */
 
         var now = new Date().getTime();
-        var alertTime = new Date(now + 1000*timer.totalTraveled);
+        var alertTime = new Date(now + 60*1000*timer.totalTraveled);
         window.plugin.notification.local.add({
                  id: timer.ID,
                date: alertTime,
@@ -467,11 +457,4 @@ var timer = {
         });
 
     },
-};
-
-var debug = {
-    showPoint: function(x,y,small) {
-        var width = small == true ? 10 : 20;
-        $('body').append('<div style="height:'+width+'px;width:'+width+'px;position:absolute;top:'+y+'px;left:'+x+'px;background-color:#238e23;"></div>');
-    }
 };
