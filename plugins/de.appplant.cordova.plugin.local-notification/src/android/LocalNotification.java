@@ -109,13 +109,9 @@ public class LocalNotification extends CordovaPlugin {
         }
 
         if (action.equalsIgnoreCase("isScheduled")) {
-            cordova.getThreadPool().execute( new Runnable() {
-                public void run() {
-                    String id = args.optString(0);
+            String id = args.optString(0);
 
-                    isScheduled(id, callbackContext);
-                }
-            });
+            isScheduled(id, callbackContext);
 
             return true;
         }
